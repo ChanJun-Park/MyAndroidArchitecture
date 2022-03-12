@@ -27,7 +27,7 @@ class QuestionsListViewMvcImpl(
 		}
 	}
 
-	override fun bindQuestions(questions: MutableList<Question>) {
+	override fun bindQuestions(questions: List<Question>) {
 		mQuestionsListAdapter.questions = questions
 	}
 }

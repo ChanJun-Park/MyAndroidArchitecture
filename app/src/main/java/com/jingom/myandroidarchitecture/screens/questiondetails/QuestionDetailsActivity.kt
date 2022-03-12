@@ -6,22 +6,20 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jingom.myandroidarchitecture.R
-import com.jingom.myandroidarchitecture.networking.QuestionDetailsResponseSchema
 import com.jingom.myandroidarchitecture.networking.QuestionSchema
-import com.jingom.myandroidarchitecture.networking.StackoverflowApi
 import com.jingom.myandroidarchitecture.questions.QuestionDetails
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
 import dagger.hilt.android.AndroidEntryPoint
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuestionDetailsActivity : AppCompatActivity() {
 
-	@Inject lateinit var stackoverflowApi: StackoverflowApi
+	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
 	@Inject lateinit var viewMvcFactory: ViewMvcFactory
+	@Inject lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
 	private lateinit var questionDetailsViewMvc: QuestionDetailsViewMvc
 	private var questionId: String? = null
 
@@ -38,41 +36,34 @@ class QuestionDetailsActivity : AppCompatActivity() {
 		fetchQuestionDetails()
 	}
 
+	override fun onStop() {
+		super.onStop()
+		coroutineScope.coroutineContext.cancelChildren()
+	}
+
 	private fun fetchQuestionDetails() {
 		questionId?.let {
 
-			questionDetailsViewMvc.showProgressIndication()
+			coroutineScope.launch {
+				questionDetailsViewMvc.showProgressIndication()
 
-			stackoverflowApi.fetchQuestionDetails(it).enqueue(object : Callback<QuestionDetailsResponseSchema?> {
-				override fun onResponse(call: Call<QuestionDetailsResponseSchema?>, response: Response<QuestionDetailsResponseSchema?>) {
-					val questionSchema = response.body()?.question
-
-					if (response.isSuccessful && questionSchema != null) {
-						bindQuestionDetails(questionSchema)
-					} else {
-						networkCallFailed()
+				try {
+					when (val result = fetchQuestionDetailsUseCase.fetchQuestionDetails(it)) {
+						is FetchQuestionDetailsUseCase.Result.Success -> {
+							questionDetailsViewMvc.bindQuestionDetails(result.question)
+						}
+						is FetchQuestionDetailsUseCase.Result.Failure -> {
+							onFetchFailed()
+						}
 					}
+				} finally {
+					questionDetailsViewMvc.hideProgressIndication()
 				}
-
-				override fun onFailure(call: Call<QuestionDetailsResponseSchema?>, t: Throwable) {
-					networkCallFailed()
-				}
-
-			})
+			}
 		}
 	}
 
-	private fun bindQuestionDetails(questionSchema: QuestionSchema) {
-		val questionDetails = QuestionDetails(questionSchema.id, questionSchema.title, questionSchema.body)
-
-		questionDetailsViewMvc.apply {
-			hideProgressIndication()
-			bindQuestionDetails(questionDetails)
-		}
-	}
-
-	private fun networkCallFailed() {
-		questionDetailsViewMvc.hideProgressIndication()
+	private fun onFetchFailed() {
 		Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show()
 	}
 

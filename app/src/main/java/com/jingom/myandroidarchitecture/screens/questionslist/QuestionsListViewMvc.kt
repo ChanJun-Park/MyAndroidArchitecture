@@ -8,5 +8,5 @@ interface QuestionsListViewMvc: ObservableViewMvc<QuestionsListViewMvc.Listener>
 		fun onQuestionClicked(question: Question?)
 	}
 
-	fun bindQuestions(questions: MutableList<Question>)
+	fun bindQuestions(questions: List<Question>)
 }

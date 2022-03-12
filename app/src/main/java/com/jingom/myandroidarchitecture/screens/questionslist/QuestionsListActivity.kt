@@ -6,23 +6,23 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.common.Constants
 import com.jingom.myandroidarchitecture.networking.QuestionSchema
 import com.jingom.myandroidarchitecture.networking.QuestionsListResponseSchema
-import com.jingom.myandroidarchitecture.networking.StackoverflowApi
 import com.jingom.myandroidarchitecture.questions.Question
 import com.jingom.myandroidarchitecture.screens.common.BaseActivity
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
 import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
-	@Inject lateinit var mStackoverflowApi: StackoverflowApi
+	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+
+	@Inject lateinit var fetchQuestionListUseCase: FetchQuestionListUseCase
 	@Inject lateinit var viewMvcFactory: ViewMvcFactory
 
 	private lateinit var questionsListViewMvc: QuestionsListViewMvc
@@ -40,33 +40,33 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 		fetchQuestions()
 	}
 
-	private fun fetchQuestions() {
-		mStackoverflowApi.fetchLastActiveQuestions(Constants.QUESTIONS_LIST_PAGE_SIZE)
-			.enqueue(object : Callback<QuestionsListResponseSchema?> {
-				override fun onResponse(call: Call<QuestionsListResponseSchema?>, response: Response<QuestionsListResponseSchema?>) {
-					if (response.isSuccessful) {
-						bindQuestions(response.body()!!.questions)
-					} else {
-						networkCallFailed()
-					}
-				}
-
-				override fun onFailure(call: Call<QuestionsListResponseSchema?>, t: Throwable) {
-					networkCallFailed()
-				}
-
-			})
+	override fun onStop() {
+		super.onStop()
+		coroutineScope.coroutineContext.cancelChildren()
 	}
 
-	private fun bindQuestions(questionSchemas: List<QuestionSchema>) {
-		val questions: MutableList<Question> = ArrayList(questionSchemas.size)
-		for ((title, id) in questionSchemas) {
-			questions.add(Question(id, title))
+	private fun fetchQuestions() {
+		coroutineScope.launch {
+			try {
+				when (val result = fetchQuestionListUseCase.fetchLastActiveQuestions()) {
+					is FetchQuestionListUseCase.Result.Success -> {
+						bindQuestions(result.questions)
+					}
+					is FetchQuestionListUseCase.Result.Failure -> {
+						onFetchQuestionsFailed()
+					}
+				}
+			} finally {
+				
+			}
 		}
+	}
+
+	private fun bindQuestions(questions: List<Question>) {
 		questionsListViewMvc.bindQuestions(questions)
 	}
 
-	private fun networkCallFailed() {
+	private fun onFetchQuestionsFailed() {
 		Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show()
 	}
 
