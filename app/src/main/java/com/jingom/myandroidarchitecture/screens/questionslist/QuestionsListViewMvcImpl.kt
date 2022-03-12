@@ -5,16 +5,15 @@ import android.view.ViewGroup
 import android.widget.ListView
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.BaseViewMvc
+import com.jingom.myandroidarchitecture.screens.common.BaseObservableViewMvc
 
 class QuestionsListViewMvcImpl(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup?
-) : BaseViewMvc(
+) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(
 	layoutInflater.inflate(R.layout.layout_questions_list, parent, false)
 ), QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
-	private val listeners = ArrayList<QuestionsListViewMvc.Listener>(1)
 	private var mLstQuestions: ListView = findViewById(R.id.lst_questions)
 	private var mQuestionsListAdapter: QuestionsListAdapter = QuestionsListAdapter(rootView.context, this)
 
@@ -22,16 +21,8 @@ class QuestionsListViewMvcImpl(
 		mLstQuestions.adapter = mQuestionsListAdapter
 	}
 
-	override fun registerListener(listener: QuestionsListViewMvc.Listener) {
-		listeners.add(listener)
-	}
-
-	override fun unregisterListener(listener: QuestionsListViewMvc.Listener) {
-		listeners.remove(listener)
-	}
-
 	override fun onQuestionClicked(question: Question?) {
-		listeners.forEach {
+		getListeners().forEach {
 			it.onQuestionClicked(question)
 		}
 	}
