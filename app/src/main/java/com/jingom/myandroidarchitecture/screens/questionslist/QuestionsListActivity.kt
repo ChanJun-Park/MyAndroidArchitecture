@@ -10,6 +10,7 @@ import com.jingom.myandroidarchitecture.networking.StackoverflowApi
 import com.jingom.myandroidarchitecture.questions.Question
 import com.jingom.myandroidarchitecture.screens.common.BaseActivity
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
+import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
@@ -71,7 +72,7 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
 	override fun onQuestionClicked(question: Question?) {
 		question?.let {
-			Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
+			QuestionDetailsActivity.start(this, question.id)
 		}
 	}
 }
