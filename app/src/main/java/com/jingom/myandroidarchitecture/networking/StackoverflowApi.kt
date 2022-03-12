@@ -11,6 +11,6 @@ interface StackoverflowApi {
 	fun fetchLastActiveQuestions(@Query("pagesize") pageSize: Int): Call<QuestionsListResponseSchema?>
 
 	@GET("/questions/{questionId}?key=" + Constants.STACKOVERFLOW_API_KEY + "&site=stackoverflow&filter=withbody")
-	fun fetchQuestionDetails(@Path("questionId") questionId: String?): Call<QuestionDetailsResponseSchema?>?
+	fun fetchQuestionDetails(@Path("questionId") questionId: String): Call<QuestionDetailsResponseSchema?>
 
 }
