@@ -1,45 +1,57 @@
 package com.jingom.myandroidarchitecture.screens.questionslist
 
-import android.content.Context
-import android.widget.ArrayAdapter
-import com.jingom.myandroidarchitecture.questions.Question
-import android.view.ViewGroup
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jingom.myandroidarchitecture.R
+import com.jingom.myandroidarchitecture.questions.Question
 
 class QuestionsListAdapter(
-	context: Context,
-	private val mOnQuestionClickListener: OnQuestionClickListener
-) : ArrayAdapter<Question>(context, 0), QuestionsListItemViewMvc.Listener {
+	private val layoutInflater: LayoutInflater,
+	private val listener: OnQuestionClickListener
+) : RecyclerView.Adapter<QuestionsListAdapter.MyViewHolder>(), QuestionsListItemViewMvc.Listener {
 
 	interface OnQuestionClickListener {
 		fun onQuestionClicked(question: Question?)
 	}
 
-	override fun getView(position: Int, view: View?, parent: ViewGroup): View {
-		var convertView = view
-		if (convertView == null) {
-			val viewMvc = QuestionsListItemViewMvcImpl(LayoutInflater.from(context), parent).also {
-				it.registerListener(this)
+	class MyViewHolder(val viewMvc: QuestionsListItemViewMvc): RecyclerView.ViewHolder(viewMvc.rootView) {
+
+		companion object {
+			fun from(layoutInflater: LayoutInflater, parent: ViewGroup, listener: QuestionsListItemViewMvc.Listener): MyViewHolder {
+				val viewMvc = QuestionsListItemViewMvcImpl(layoutInflater, parent).apply {
+					registerListener(listener)
+				}
+				return MyViewHolder(viewMvc)
 			}
-
-			convertView = viewMvc.rootView
-			convertView.tag = viewMvc
 		}
-
-		val question = getItem(position)
-
-		// bind the data to views
-		val viewMvc = convertView.tag as QuestionsListItemViewMvc
-		viewMvc.bindQuestion(question)
-
-		return convertView
 	}
 
+	var questions: List<Question> = ArrayList()
+		@SuppressLint("NotifyDataSetChanged")
+		set(value) {
+			field = value
+			notifyDataSetChanged()
+		}
+
 	override fun onQuestionClicked(question: Question?) {
-		mOnQuestionClickListener.onQuestionClicked(question)
+		listener.onQuestionClicked(question)
+	}
+
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+		return MyViewHolder.from(layoutInflater, parent, this)
+	}
+
+	override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+		if (position < 0 || position >= questions.size) {
+			return
+		}
+
+		holder.viewMvc.bindQuestion(questions[position])
+	}
+
+	override fun getItemCount(): Int {
+		return questions.size
 	}
 }
