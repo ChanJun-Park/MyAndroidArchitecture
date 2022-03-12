@@ -1,20 +1,21 @@
 package com.jingom.myandroidarchitecture.screens.questionslist
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.IdRes
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
+import com.jingom.myandroidarchitecture.screens.common.BaseViewMvc
 
 class QuestionsListItemViewMvcImpl(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup
-): QuestionsListItemViewMvc {
+): BaseViewMvc(
+	layoutInflater.inflate(R.layout.layout_question_list_item, parent, false)
+), QuestionsListItemViewMvc {
 
-	override val rootView: View = layoutInflater.inflate(R.layout.layout_question_list_item, parent, false).also {
-		it.setOnClickListener {
+	init {
+		rootView.setOnClickListener {
 			listeners.forEach { listener ->
 				listener.onQuestionClicked(question)
 			}
@@ -37,9 +38,5 @@ class QuestionsListItemViewMvcImpl(
 
 	override fun unregisterListener(listener: QuestionsListItemViewMvc.Listener) {
 		listeners.remove(listener)
-	}
-
-	private fun <T : View?> findViewById(@IdRes id: Int): T {
-		return rootView.findViewById<T>(id)
 	}
 }
