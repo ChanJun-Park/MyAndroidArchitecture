@@ -69,7 +69,9 @@ class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 		Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show()
 	}
 
-	override fun onQuestionClicked(question: Question) {
-		Toast.makeText(this, question.title, Toast.LENGTH_SHORT).show()
+	override fun onQuestionClicked(question: Question?) {
+		question?.let {
+			Toast.makeText(this, it.title, Toast.LENGTH_SHORT).show()
+		}
 	}
 }

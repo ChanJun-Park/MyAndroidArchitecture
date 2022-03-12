@@ -7,45 +7,39 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.jingom.myandroidarchitecture.R
 
 class QuestionsListAdapter(
 	context: Context,
 	private val mOnQuestionClickListener: OnQuestionClickListener
-) : ArrayAdapter<Question>(context, 0) {
+) : ArrayAdapter<Question>(context, 0), QuestionsListItemViewMvc.Listener {
 
 	interface OnQuestionClickListener {
-		fun onQuestionClicked(question: Question)
-	}
-
-	private class ViewHolder {
-		lateinit var mTxtTitle: TextView
+		fun onQuestionClicked(question: Question?)
 	}
 
 	override fun getView(position: Int, view: View?, parent: ViewGroup): View {
 		var convertView = view
 		if (convertView == null) {
-			convertView = LayoutInflater.from(parent.context)
-				.inflate(R.layout.layout_question_list_item, parent, false)
-
-			val viewHolder = ViewHolder().apply {
-				mTxtTitle = convertView.findViewById(R.id.txt_title)
+			val viewMvc = QuestionsListItemViewMvcImpl(LayoutInflater.from(context), parent).also {
+				it.registerListener(this)
 			}
 
-			convertView.tag = viewHolder
+			convertView = viewMvc.rootView
+			convertView.tag = viewMvc
 		}
+
 		val question = getItem(position)
 
 		// bind the data to views
-		val viewHolder = convertView!!.tag as ViewHolder
-		viewHolder.mTxtTitle.text = question!!.title
+		val viewMvc = convertView.tag as QuestionsListItemViewMvc
+		viewMvc.bindQuestion(question)
 
-		// set listener
-		convertView.setOnClickListener { onQuestionClicked(question) }
 		return convertView
 	}
 
-	private fun onQuestionClicked(question: Question) {
+	override fun onQuestionClicked(question: Question?) {
 		mOnQuestionClickListener.onQuestionClicked(question)
 	}
 }

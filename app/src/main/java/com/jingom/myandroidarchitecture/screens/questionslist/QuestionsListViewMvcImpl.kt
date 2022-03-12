@@ -35,7 +35,7 @@ class QuestionsListViewMvcImpl(
 		return rootView.findViewById<T>(id)
 	}
 
-	override fun onQuestionClicked(question: Question) {
+	override fun onQuestionClicked(question: Question?) {
 		listeners.forEach {
 			it.onQuestionClicked(question)
 		}
