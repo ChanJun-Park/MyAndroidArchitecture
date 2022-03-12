@@ -9,29 +9,29 @@ import com.jingom.myandroidarchitecture.networking.QuestionsListResponseSchema
 import com.jingom.myandroidarchitecture.networking.StackoverflowApi
 import com.jingom.myandroidarchitecture.questions.Question
 import com.jingom.myandroidarchitecture.screens.common.BaseActivity
+import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
-	private lateinit var mStackoverflowApi: StackoverflowApi
+	@Inject lateinit var mStackoverflowApi: StackoverflowApi
+	@Inject lateinit var viewMvcFactory: ViewMvcFactory
+
 	private lateinit var questionsListViewMvc: QuestionsListViewMvc
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		questionsListViewMvc = QuestionsListViewMvcImpl(layoutInflater, null)
+		questionsListViewMvc = viewMvcFactory.getQuestionListViewMvc(null)
 		setContentView(questionsListViewMvc.rootView)
 
 		questionsListViewMvc.registerListener(this)
-
-		mStackoverflowApi = Retrofit.Builder()
-			.baseUrl(Constants.BASE_URL)
-			.addConverterFactory(GsonConverterFactory.create())
-			.build()
-			.create(StackoverflowApi::class.java)
 	}
 
 	override fun onStart() {
