@@ -1,7 +1,6 @@
 package com.jingom.myandroidarchitecture.screens.questionslist
 
 import android.os.Bundle
-import android.widget.ListView
 import android.widget.Toast
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.common.Constants
@@ -10,26 +9,24 @@ import com.jingom.myandroidarchitecture.networking.QuestionsListResponseSchema
 import com.jingom.myandroidarchitecture.networking.StackoverflowApi
 import com.jingom.myandroidarchitecture.questions.Question
 import com.jingom.myandroidarchitecture.screens.common.BaseActivity
-import com.jingom.myandroidarchitecture.screens.questionslist.QuestionsListAdapter.OnQuestionClickListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class QuestionsListActivity : BaseActivity(), OnQuestionClickListener {
+class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
 
 	private lateinit var mStackoverflowApi: StackoverflowApi
-	private lateinit var mLstQuestions: ListView
-	private lateinit var mQuestionsListAdapter: QuestionsListAdapter
+	private lateinit var questionsListViewMvc: QuestionsListViewMvc
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.layout_questions_list)
+		questionsListViewMvc = QuestionsListViewMvcImpl(layoutInflater, null)
+		setContentView(questionsListViewMvc.rootView)
 
-		mLstQuestions = findViewById(R.id.lst_questions)
-		mQuestionsListAdapter = QuestionsListAdapter(this, this)
-		mLstQuestions.adapter = mQuestionsListAdapter
+		questionsListViewMvc.registerListener(this)
+
 		mStackoverflowApi = Retrofit.Builder()
 			.baseUrl(Constants.BASE_URL)
 			.addConverterFactory(GsonConverterFactory.create())
@@ -65,9 +62,7 @@ class QuestionsListActivity : BaseActivity(), OnQuestionClickListener {
 		for ((title, id) in questionSchemas) {
 			questions.add(Question(id, title))
 		}
-		mQuestionsListAdapter.clear()
-		mQuestionsListAdapter.addAll(questions)
-		mQuestionsListAdapter.notifyDataSetChanged()
+		questionsListViewMvc.bindQuestions(questions)
 	}
 
 	private fun networkCallFailed() {
