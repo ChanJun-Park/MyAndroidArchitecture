@@ -19,7 +19,7 @@ class QuestionsListViewMvcImpl(
 	viewMvcFactory: ViewMvcFactory
 ) : BaseNavDrawerViewMvc<QuestionsListViewMvc.Listener>(
 	layoutInflater, parent, layoutInflater.inflate(R.layout.layout_questions_list, parent, false)
-), QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
+), QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc, ToolbarViewMvc.Listener {
 
 	private val mLstQuestions: RecyclerView = findViewById(R.id.lst_questions)
 	private val progressBar: ProgressBar = findViewById(R.id.progress_bar)
@@ -27,6 +27,8 @@ class QuestionsListViewMvcImpl(
 	private val toolbarViewMvc: ToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(toolbar).also {
 		it.setTitle(toolbar.resources.getString(R.string.questions_list_screen_title))
 		it.hideUpButton()
+		it.showHamburgerButton()
+		it.registerListener(this)
 		toolbar.addView(it.rootView)
 	}
 
@@ -62,5 +64,13 @@ class QuestionsListViewMvcImpl(
 				}
 			}
 		}
+	}
+
+	override fun onNavigationUpClicked() {
+		// do nothing
+	}
+
+	override fun onHamburgerButtonClicked() {
+		openDrawerLayout()
 	}
 }

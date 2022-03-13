@@ -17,6 +17,8 @@ class ToolbarViewMvc(
 
 	interface Listener {
 		fun onNavigationUpClicked()
+
+		fun onHamburgerButtonClicked()
 	}
 
 	private val title: TextView = findViewById(R.id.title)
@@ -24,6 +26,13 @@ class ToolbarViewMvc(
 		setOnClickListener {
 			getListeners().forEach { listener ->
 				listener.onNavigationUpClicked()
+			}
+		}
+	}
+	private val hamburgerButton: ImageButton = findViewById<ImageButton>(R.id.hamburger_button).apply {
+		setOnClickListener {
+			getListeners().forEach { listener ->
+				listener.onHamburgerButtonClicked()
 			}
 		}
 	}
@@ -38,5 +47,13 @@ class ToolbarViewMvc(
 
 	fun hideUpButton() {
 		upButton.visibility = View.GONE
+	}
+
+	fun showHamburgerButton() {
+		hamburgerButton.visibility = View.VISIBLE
+	}
+
+	fun hideHamburgerButton() {
+		hamburgerButton.visibility = View.GONE
 	}
 }

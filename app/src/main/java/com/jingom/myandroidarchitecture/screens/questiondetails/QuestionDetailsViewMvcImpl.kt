@@ -29,8 +29,9 @@ class QuestionDetailsViewMvcImpl(
 
 	private val toolbar: Toolbar = findViewById(R.id.toolbar)
 	private val toolbarViewMvc: ToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(toolbar).also {
-		it.setTitle(toolbar.resources.getString(R.string.questions_list_screen_title))
+		it.setTitle(toolbar.resources.getString(R.string.question_details_screen_title))
 		it.showUpButton()
+		it.hideHamburgerButton()
 		it.registerListener(this)
 		toolbar.addView(it.rootView)
 	}
@@ -54,5 +55,9 @@ class QuestionDetailsViewMvcImpl(
 		getListeners().forEach {
 			it.onNavigateUpButtonClicked()
 		}
+	}
+
+	override fun onHamburgerButtonClicked() {
+		// do nothing
 	}
 }

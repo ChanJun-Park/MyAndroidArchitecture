@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.jingom.myandroidarchitecture.R
@@ -29,6 +30,10 @@ abstract class BaseNavDrawerViewMvc<ListenerType>(
 			}
 			false
 		}
+	}
+
+	protected fun openDrawerLayout() {
+		drawerLayout.openDrawer(GravityCompat.START)
 	}
 
 	abstract fun onDrawerItemClicked(questionsList: DrawerItem)
