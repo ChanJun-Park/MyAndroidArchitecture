@@ -5,21 +5,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.QuestionDetails
+import com.jingom.myandroidarchitecture.screens.common.ToolbarViewMvc
+import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
+import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
 import com.jingom.myandroidarchitecture.screens.common.view.BaseViewMvc
 
 class QuestionDetailsViewMvcImpl(
 	layoutInflater: LayoutInflater,
-	parent: ViewGroup?
-) : BaseViewMvc(
+	parent: ViewGroup?,
+	viewMvcFactory: ViewMvcFactory
+) : BaseObservableViewMvc<QuestionDetailsViewMvc.Listener>(
 	layoutInflater.inflate(R.layout.layout_question_details, parent, false)
-), QuestionDetailsViewMvc {
+), QuestionDetailsViewMvc, ToolbarViewMvc.Listener {
+
+	private var questionDetails: QuestionDetails? = null
 
 	private val title: TextView = findViewById(R.id.title)
 	private val body: TextView = findViewById(R.id.body)
 	private val progressBar: ProgressBar = findViewById(R.id.progress_bar)
-	private var questionDetails: QuestionDetails? = null
+
+	private val toolbar: Toolbar = findViewById(R.id.toolbar)
+	private val toolbarViewMvc: ToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(toolbar).also {
+		it.setTitle(toolbar.resources.getString(R.string.questions_list_screen_title))
+		it.showUpButton()
+		it.registerListener(this)
+		toolbar.addView(it.rootView)
+	}
 
 	override fun bindQuestionDetails(questionDetails: QuestionDetails) {
 		this.questionDetails = questionDetails
@@ -34,5 +48,11 @@ class QuestionDetailsViewMvcImpl(
 
 	override fun hideProgressIndication() {
 		progressBar.visibility = View.GONE
+	}
+
+	override fun onNavigationUpClicked() {
+		getListeners().forEach {
+			it.onNavigateUpButtonClicked()
+		}
 	}
 }

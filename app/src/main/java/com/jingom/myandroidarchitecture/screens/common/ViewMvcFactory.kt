@@ -17,7 +17,7 @@ class ViewMvcFactory @Inject constructor(
 	}
 
 	fun getQuestionDetailsViewMvc(parent: ViewGroup?): QuestionDetailsViewMvc {
-		return QuestionDetailsViewMvcImpl(layoutInflater, parent)
+		return QuestionDetailsViewMvcImpl(layoutInflater, parent, this)
 	}
 
 	fun getToolbarViewMvc(toolbar: Toolbar): ToolbarViewMvc {

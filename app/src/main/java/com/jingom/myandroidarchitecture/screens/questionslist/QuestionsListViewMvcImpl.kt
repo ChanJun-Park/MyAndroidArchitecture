@@ -25,6 +25,7 @@ class QuestionsListViewMvcImpl(
 	private val toolbar: Toolbar = findViewById(R.id.toolbar)
 	private val toolbarViewMvc: ToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(toolbar).also {
 		it.setTitle(toolbar.resources.getString(R.string.questions_list_screen_title))
+		it.hideUpButton()
 		toolbar.addView(it.rootView)
 	}
 

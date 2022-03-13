@@ -1,5 +1,6 @@
 package com.jingom.myandroidarchitecture.screens.common.screensnavigator
 
+import android.app.Activity
 import android.content.Context
 import com.jingom.myandroidarchitecture.common.dependecyinjection.ActivityContextQualifier
 import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsActivity
@@ -11,5 +12,9 @@ class ScreensNavigator @Inject constructor(
 
 	fun navigateToQuestionDetails(questionId: String) {
 		QuestionDetailsActivity.start(context, questionId)
+	}
+
+	fun navigateBack() {
+		(context as Activity).onBackPressed()
 	}
 }

@@ -8,17 +8,19 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.FetchQuestionDetailsUseCase
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
+import com.jingom.myandroidarchitecture.screens.common.screensnavigator.ScreensNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class QuestionDetailsActivity : AppCompatActivity() {
+class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.Listener {
 
 	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
 	@Inject lateinit var viewMvcFactory: ViewMvcFactory
 	@Inject lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
+	@Inject lateinit var screensNavigator: ScreensNavigator
 	private lateinit var questionDetailsViewMvc: QuestionDetailsViewMvc
 	private var questionId: String? = null
 
@@ -26,6 +28,7 @@ class QuestionDetailsActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		questionId = intent.getStringExtra(EXTRA_QUESTION_ID)
 		questionDetailsViewMvc = viewMvcFactory.getQuestionDetailsViewMvc(null)
+		questionDetailsViewMvc.registerListener(this)
 
 		setContentView(questionDetailsViewMvc.rootView)
 	}
@@ -75,5 +78,9 @@ class QuestionDetailsActivity : AppCompatActivity() {
 				context.startActivity(it)
 			}
 		}
+	}
+
+	override fun onNavigateUpButtonClicked() {
+		screensNavigator.navigateBack()
 	}
 }
