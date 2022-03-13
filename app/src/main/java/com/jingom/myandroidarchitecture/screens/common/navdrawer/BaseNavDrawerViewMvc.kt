@@ -17,7 +17,7 @@ abstract class BaseNavDrawerViewMvc<ListenerType>(
 	contentView: View
 ): BaseObservableViewMvc<ListenerType>(
 	layoutInflater.inflate(R.layout.layout_drawer, parent, false)
-) {
+), NavDrawerViewMvc {
 	private val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
 	private val frameLayout: FrameLayout = findViewById<FrameLayout>(R.id.frame_content).apply {
 		addView(contentView)
@@ -32,8 +32,16 @@ abstract class BaseNavDrawerViewMvc<ListenerType>(
 		}
 	}
 
-	protected fun openDrawerLayout() {
+	override fun isDrawerOpen(): Boolean {
+		return drawerLayout.isDrawerOpen(GravityCompat.START)
+	}
+
+	override fun openDrawer() {
 		drawerLayout.openDrawer(GravityCompat.START)
+	}
+
+	override fun closeDrawer() {
+		drawerLayout.closeDrawers()
 	}
 
 	abstract fun onDrawerItemClicked(questionsList: DrawerItem)

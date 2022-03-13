@@ -67,4 +67,13 @@ class QuestionsListController @Inject constructor(
 	override fun onQuestionsClicked() {
 		// this is the questions list screen - no - op
 	}
+
+	fun onBackPressed(): Boolean {
+		return if (questionsListViewMvc.isDrawerOpen()) {
+			questionsListViewMvc.closeDrawer()
+			true
+		} else {
+			false
+		}
+	}
 }

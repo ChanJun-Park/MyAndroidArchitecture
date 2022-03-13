@@ -28,7 +28,7 @@ class QuestionsListViewMvcImpl(
 		it.setTitle(toolbar.resources.getString(R.string.questions_list_screen_title))
 		it.enableHamburgerButtonAndListen(object : ToolbarViewMvc.HamburgerClickListener {
 			override fun onHamburgerButtonClicked() {
-				openDrawerLayout()
+				openDrawer()
 			}
 		})
 		toolbar.addView(it.rootView)
