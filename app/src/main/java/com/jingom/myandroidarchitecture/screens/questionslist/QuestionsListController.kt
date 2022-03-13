@@ -63,4 +63,8 @@ class QuestionsListController @Inject constructor(
 			screensNavigator.navigateToQuestionDetails(question.id)
 		}
 	}
+
+	override fun onQuestionsClicked() {
+		// this is the questions list screen - no - op
+	}
 }

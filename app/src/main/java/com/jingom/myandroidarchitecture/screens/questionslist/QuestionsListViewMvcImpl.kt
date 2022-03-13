@@ -10,14 +10,15 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
 import com.jingom.myandroidarchitecture.screens.common.ToolbarViewMvc
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
-import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
+import com.jingom.myandroidarchitecture.screens.common.navdrawer.BaseNavDrawerViewMvc
+import com.jingom.myandroidarchitecture.screens.common.navdrawer.DrawerItem
 
 class QuestionsListViewMvcImpl(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup?,
 	viewMvcFactory: ViewMvcFactory
-) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(
-	layoutInflater.inflate(R.layout.layout_questions_list, parent, false)
+) : BaseNavDrawerViewMvc<QuestionsListViewMvc.Listener>(
+	layoutInflater, parent, layoutInflater.inflate(R.layout.layout_questions_list, parent, false)
 ), QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
 	private val mLstQuestions: RecyclerView = findViewById(R.id.lst_questions)
@@ -51,5 +52,15 @@ class QuestionsListViewMvcImpl(
 
 	override fun hideProgressBar() {
 		progressBar.visibility = View.GONE
+	}
+
+	override fun onDrawerItemClicked(questionsList: DrawerItem) {
+		when (questionsList) {
+			DrawerItem.QUESTIONS_LIST -> {
+				getListeners().forEach {
+					it.onQuestionsClicked()
+				}
+			}
+		}
 	}
 }

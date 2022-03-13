@@ -6,6 +6,8 @@ import com.jingom.myandroidarchitecture.screens.common.view.ObservableViewMvc
 interface QuestionsListViewMvc: ObservableViewMvc<QuestionsListViewMvc.Listener> {
 	interface Listener{
 		fun onQuestionClicked(question: Question?)
+
+		fun onQuestionsClicked()
 	}
 
 	fun bindQuestions(questions: List<Question>)
