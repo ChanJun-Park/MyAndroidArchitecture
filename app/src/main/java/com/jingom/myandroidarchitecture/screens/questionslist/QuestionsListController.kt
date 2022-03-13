@@ -17,14 +17,15 @@ class QuestionsListController @Inject constructor(
 
 	fun bindView(questionsListViewMvc: QuestionsListViewMvc) {
 		this.questionsListViewMvc = questionsListViewMvc
-		questionsListViewMvc.registerListener(this)
 	}
 
 	fun onStart() {
+		questionsListViewMvc.registerListener(this)
 		fetchQuestions()
 	}
 
 	fun onStop() {
+		questionsListViewMvc.unregisterListener(this)
 		coroutineScope.coroutineContext.cancelChildren()
 	}
 
