@@ -2,10 +2,11 @@ package com.jingom.myandroidarchitecture.screens.questionslist
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jingom.myandroidarchitecture.questions.Question
+import com.jingom.myandroidarchitecture.screens.questionslist.questionslistitem.QuestionsListItemViewMvc
+import com.jingom.myandroidarchitecture.screens.questionslist.questionslistitem.QuestionsListItemViewMvcImpl
 
 class QuestionsListAdapter(
 	private val layoutInflater: LayoutInflater,

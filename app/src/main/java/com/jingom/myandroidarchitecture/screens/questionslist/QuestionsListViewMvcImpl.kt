@@ -5,10 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.BaseObservableViewMvc
+import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
 
 class QuestionsListViewMvcImpl(
 	layoutInflater: LayoutInflater,

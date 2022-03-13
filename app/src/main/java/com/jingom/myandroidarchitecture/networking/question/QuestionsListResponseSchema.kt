@@ -1,4 +1,4 @@
-package com.jingom.myandroidarchitecture.networking
+package com.jingom.myandroidarchitecture.networking.question
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,6 +1,7 @@
-package com.jingom.myandroidarchitecture.networking
+package com.jingom.myandroidarchitecture.networking.question
 
 import com.google.gson.annotations.SerializedName
+import com.jingom.myandroidarchitecture.networking.user.UserSchema
 import com.jingom.myandroidarchitecture.questions.QuestionDetails
 
 data class QuestionSchema(

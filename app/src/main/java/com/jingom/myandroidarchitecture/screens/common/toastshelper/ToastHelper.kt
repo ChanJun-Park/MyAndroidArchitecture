@@ -1,4 +1,4 @@
-package com.jingom.myandroidarchitecture.screens.common
+package com.jingom.myandroidarchitecture.screens.common.toastshelper
 
 import android.content.Context
 import android.widget.Toast
@@ -6,7 +6,7 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.common.dependecyinjection.ActivityContextQualifier
 import javax.inject.Inject
 
-class MessageDisplayer @Inject constructor(
+class ToastHelper @Inject constructor(
 	@ActivityContextQualifier private val context: Context
 ){
 

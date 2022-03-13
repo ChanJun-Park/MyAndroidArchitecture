@@ -1,7 +1,8 @@
 package com.jingom.myandroidarchitecture.networking
 
 import com.jingom.myandroidarchitecture.common.Constants
-import retrofit2.Call
+import com.jingom.myandroidarchitecture.networking.question.QuestionDetailsResponseSchema
+import com.jingom.myandroidarchitecture.networking.question.QuestionsListResponseSchema
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

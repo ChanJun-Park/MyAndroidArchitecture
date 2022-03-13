@@ -1,7 +1,6 @@
-package com.jingom.myandroidarchitecture.screens.questiondetails
+package com.jingom.myandroidarchitecture.questions
 
 import com.jingom.myandroidarchitecture.networking.StackoverflowApi
-import com.jingom.myandroidarchitecture.questions.QuestionDetails
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,12 +1,11 @@
-package com.jingom.myandroidarchitecture.screens.questionslist
+package com.jingom.myandroidarchitecture.screens.questionslist.questionslistitem
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.BaseObservableViewMvc
-import com.jingom.myandroidarchitecture.screens.common.BaseViewMvc
+import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
 
 class QuestionsListItemViewMvcImpl(
 	layoutInflater: LayoutInflater,

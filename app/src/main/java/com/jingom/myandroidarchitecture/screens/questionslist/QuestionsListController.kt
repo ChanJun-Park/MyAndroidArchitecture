@@ -1,14 +1,15 @@
 package com.jingom.myandroidarchitecture.screens.questionslist
 
+import com.jingom.myandroidarchitecture.questions.FetchQuestionListUseCase
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.MessageDisplayer
-import com.jingom.myandroidarchitecture.screens.common.ScreensNavigator
+import com.jingom.myandroidarchitecture.screens.common.toastshelper.ToastHelper
+import com.jingom.myandroidarchitecture.screens.common.screensnavigator.ScreensNavigator
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class QuestionsListController @Inject constructor(
 	private val screensNavigator: ScreensNavigator,
-	private val messageDisplayer: MessageDisplayer,
+	private val toastHelper: ToastHelper,
 	private val fetchQuestionListUseCase: FetchQuestionListUseCase
 ) : QuestionsListViewMvc.Listener {
 
@@ -54,7 +55,7 @@ class QuestionsListController @Inject constructor(
 	}
 
 	private fun onFetchQuestionsFailed() {
-		messageDisplayer.showFetchError()
+		toastHelper.showFetchError()
 	}
 
 	override fun onQuestionClicked(question: Question?) {

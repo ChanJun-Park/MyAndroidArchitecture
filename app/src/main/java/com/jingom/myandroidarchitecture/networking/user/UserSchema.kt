@@ -1,4 +1,4 @@
-package com.jingom.myandroidarchitecture.networking
+package com.jingom.myandroidarchitecture.networking.user
 
 import com.google.gson.annotations.SerializedName
 

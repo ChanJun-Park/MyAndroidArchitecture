@@ -5,10 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.widget.ContentLoadingProgressBar
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.QuestionDetails
-import com.jingom.myandroidarchitecture.screens.common.BaseViewMvc
+import com.jingom.myandroidarchitecture.screens.common.view.BaseViewMvc
 
 class QuestionDetailsViewMvcImpl(
 	layoutInflater: LayoutInflater,

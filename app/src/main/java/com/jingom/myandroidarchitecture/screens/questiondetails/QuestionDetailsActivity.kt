@@ -6,8 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.jingom.myandroidarchitecture.R
-import com.jingom.myandroidarchitecture.networking.QuestionSchema
-import com.jingom.myandroidarchitecture.questions.QuestionDetails
+import com.jingom.myandroidarchitecture.questions.FetchQuestionDetailsUseCase
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*

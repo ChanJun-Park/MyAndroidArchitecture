@@ -1,4 +1,4 @@
-package com.jingom.myandroidarchitecture.screens.common
+package com.jingom.myandroidarchitecture.screens.common.screensnavigator
 
 import android.content.Context
 import com.jingom.myandroidarchitecture.common.dependecyinjection.ActivityContextQualifier
