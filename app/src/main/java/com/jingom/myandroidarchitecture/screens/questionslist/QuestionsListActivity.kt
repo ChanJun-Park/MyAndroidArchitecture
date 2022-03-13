@@ -18,61 +18,27 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class QuestionsListActivity : BaseActivity(), QuestionsListViewMvc.Listener {
+class QuestionsListActivity : BaseActivity() {
 
-	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-
-	@Inject lateinit var fetchQuestionListUseCase: FetchQuestionListUseCase
 	@Inject lateinit var viewMvcFactory: ViewMvcFactory
-
-	private lateinit var questionsListViewMvc: QuestionsListViewMvc
+	@Inject lateinit var questionsListController: QuestionsListController
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		questionsListViewMvc = viewMvcFactory.getQuestionListViewMvc(null)
-		setContentView(questionsListViewMvc.rootView)
 
-		questionsListViewMvc.registerListener(this)
+		val questionsListViewMvc = viewMvcFactory.getQuestionListViewMvc(null)
+		questionsListController.bindView(questionsListViewMvc)
+
+		setContentView(questionsListViewMvc.rootView)
 	}
 
 	override fun onStart() {
 		super.onStart()
-		fetchQuestions()
+		questionsListController.onStart()
 	}
 
 	override fun onStop() {
 		super.onStop()
-		coroutineScope.coroutineContext.cancelChildren()
-	}
-
-	private fun fetchQuestions() {
-		coroutineScope.launch {
-			try {
-				when (val result = fetchQuestionListUseCase.fetchLastActiveQuestions()) {
-					is FetchQuestionListUseCase.Result.Success -> {
-						bindQuestions(result.questions)
-					}
-					is FetchQuestionListUseCase.Result.Failure -> {
-						onFetchQuestionsFailed()
-					}
-				}
-			} finally {
-				
-			}
-		}
-	}
-
-	private fun bindQuestions(questions: List<Question>) {
-		questionsListViewMvc.bindQuestions(questions)
-	}
-
-	private fun onFetchQuestionsFailed() {
-		Toast.makeText(this, R.string.error_network_call_failed, Toast.LENGTH_SHORT).show()
-	}
-
-	override fun onQuestionClicked(question: Question?) {
-		question?.let {
-			QuestionDetailsActivity.start(this, question.id)
-		}
+		questionsListController.onStop()
 	}
 }

@@ -1,7 +1,9 @@
 package com.jingom.myandroidarchitecture.screens.questiondetails
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.widget.ContentLoadingProgressBar
 import com.jingom.myandroidarchitecture.R
@@ -17,7 +19,7 @@ class QuestionDetailsViewMvcImpl(
 
 	private val title: TextView = findViewById(R.id.title)
 	private val body: TextView = findViewById(R.id.body)
-	private val progressBar: ContentLoadingProgressBar = findViewById(R.id.progress_bar)
+	private val progressBar: ProgressBar = findViewById(R.id.progress_bar)
 	private var questionDetails: QuestionDetails? = null
 
 	override fun bindQuestionDetails(questionDetails: QuestionDetails) {
@@ -28,10 +30,10 @@ class QuestionDetailsViewMvcImpl(
 	}
 
 	override fun showProgressIndication() {
-		progressBar.show()
+		progressBar.visibility = View.VISIBLE
 	}
 
 	override fun hideProgressIndication() {
-		progressBar.hide()
+		progressBar.visibility = View.GONE
 	}
 }

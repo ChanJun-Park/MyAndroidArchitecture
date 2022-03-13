@@ -9,4 +9,8 @@ interface QuestionsListViewMvc: ObservableViewMvc<QuestionsListViewMvc.Listener>
 	}
 
 	fun bindQuestions(questions: List<Question>)
+
+	fun showProgressBar()
+
+	fun hideProgressBar()
 }
