@@ -7,33 +7,35 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
+import com.jingom.myandroidarchitecture.screens.common.view.BaseViewMvc
 
 class ToolbarViewMvc(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup
-): BaseObservableViewMvc<ToolbarViewMvc.Listener>(
+): BaseViewMvc(
 	layoutInflater.inflate(R.layout.layout_toolbar, parent, false)
 ) {
 
-	interface Listener {
+	interface NavigationUpClickListener {
 		fun onNavigationUpClicked()
+	}
 
+	interface HamburgerClickListener {
 		fun onHamburgerButtonClicked()
 	}
+
+	private var navigationUpClickListener: NavigationUpClickListener? = null
+	private var hamburgerClickListener: HamburgerClickListener? = null
 
 	private val title: TextView = findViewById(R.id.title)
 	private val upButton: ImageButton = findViewById<ImageButton>(R.id.up_button).apply {
 		setOnClickListener {
-			getListeners().forEach { listener ->
-				listener.onNavigationUpClicked()
-			}
+			navigationUpClickListener?.onNavigationUpClicked()
 		}
 	}
 	private val hamburgerButton: ImageButton = findViewById<ImageButton>(R.id.hamburger_button).apply {
 		setOnClickListener {
-			getListeners().forEach { listener ->
-				listener.onHamburgerButtonClicked()
-			}
+			hamburgerClickListener?.onHamburgerButtonClicked()
 		}
 	}
 
@@ -41,19 +43,13 @@ class ToolbarViewMvc(
 		this.title.text = title
 	}
 
-	fun showUpButton() {
+	fun enableNavigationUpButtonAndListen(listener: NavigationUpClickListener) {
+		navigationUpClickListener = listener
 		upButton.visibility = View.VISIBLE
 	}
 
-	fun hideUpButton() {
-		upButton.visibility = View.GONE
-	}
-
-	fun showHamburgerButton() {
+	fun enableHamburgerButtonAndListen(listener: HamburgerClickListener) {
+		hamburgerClickListener = listener
 		hamburgerButton.visibility = View.VISIBLE
-	}
-
-	fun hideHamburgerButton() {
-		hamburgerButton.visibility = View.GONE
 	}
 }

@@ -19,7 +19,7 @@ class QuestionDetailsViewMvcImpl(
 	viewMvcFactory: ViewMvcFactory
 ) : BaseObservableViewMvc<QuestionDetailsViewMvc.Listener>(
 	layoutInflater.inflate(R.layout.layout_question_details, parent, false)
-), QuestionDetailsViewMvc, ToolbarViewMvc.Listener {
+), QuestionDetailsViewMvc {
 
 	private var questionDetails: QuestionDetails? = null
 
@@ -30,9 +30,13 @@ class QuestionDetailsViewMvcImpl(
 	private val toolbar: Toolbar = findViewById(R.id.toolbar)
 	private val toolbarViewMvc: ToolbarViewMvc = viewMvcFactory.getToolbarViewMvc(toolbar).also {
 		it.setTitle(toolbar.resources.getString(R.string.question_details_screen_title))
-		it.showUpButton()
-		it.hideHamburgerButton()
-		it.registerListener(this)
+		it.enableNavigationUpButtonAndListen(object: ToolbarViewMvc.NavigationUpClickListener {
+			override fun onNavigationUpClicked() {
+				getListeners().forEach { listener ->
+					listener.onNavigateUpButtonClicked()
+				}
+			}
+		})
 		toolbar.addView(it.rootView)
 	}
 
@@ -49,15 +53,5 @@ class QuestionDetailsViewMvcImpl(
 
 	override fun hideProgressIndication() {
 		progressBar.visibility = View.GONE
-	}
-
-	override fun onNavigationUpClicked() {
-		getListeners().forEach {
-			it.onNavigateUpButtonClicked()
-		}
-	}
-
-	override fun onHamburgerButtonClicked() {
-		// do nothing
 	}
 }
