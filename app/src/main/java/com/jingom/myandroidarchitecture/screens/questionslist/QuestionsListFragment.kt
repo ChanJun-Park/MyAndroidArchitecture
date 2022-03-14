@@ -15,8 +15,8 @@ class QuestionsListFragment: Fragment(), BackPressedListener {
 	@Inject lateinit var viewMvcFactory: ViewMvcFactory
 	@Inject lateinit var questionsListController: QuestionsListController
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		val questionsListViewMvc = viewMvcFactory.getQuestionListViewMvc(null)
+	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+		val questionsListViewMvc = viewMvcFactory.getQuestionListViewMvc(container)
 		questionsListController.bindView(questionsListViewMvc)
 
 		return questionsListViewMvc.rootView
