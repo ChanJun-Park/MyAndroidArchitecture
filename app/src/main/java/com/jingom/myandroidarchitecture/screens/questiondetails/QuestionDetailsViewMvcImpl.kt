@@ -10,6 +10,8 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.QuestionDetails
 import com.jingom.myandroidarchitecture.screens.common.ToolbarViewMvc
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
+import com.jingom.myandroidarchitecture.screens.common.navdrawer.BaseNavDrawerViewMvc
+import com.jingom.myandroidarchitecture.screens.common.navdrawer.DrawerItem
 import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
 import com.jingom.myandroidarchitecture.screens.common.view.BaseViewMvc
 
@@ -17,8 +19,8 @@ class QuestionDetailsViewMvcImpl(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup?,
 	viewMvcFactory: ViewMvcFactory
-) : BaseObservableViewMvc<QuestionDetailsViewMvc.Listener>(
-	layoutInflater.inflate(R.layout.layout_question_details, parent, false)
+) : BaseNavDrawerViewMvc<QuestionDetailsViewMvc.Listener>(
+	layoutInflater, parent, layoutInflater.inflate(R.layout.layout_question_details, parent, false)
 ), QuestionDetailsViewMvc {
 
 	private var questionDetails: QuestionDetails? = null
@@ -53,5 +55,15 @@ class QuestionDetailsViewMvcImpl(
 
 	override fun hideProgressIndication() {
 		progressBar.visibility = View.GONE
+	}
+
+	override fun onDrawerItemClicked(questionsList: DrawerItem) {
+		when (questionsList) {
+			DrawerItem.QUESTIONS_LIST -> {
+				getListeners().forEach {
+					it.onQuestionsClicked()
+				}
+			}
+		}
 	}
 }

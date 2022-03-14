@@ -83,4 +83,16 @@ class QuestionDetailsActivity : AppCompatActivity(), QuestionDetailsViewMvc.List
 	override fun onNavigateUpButtonClicked() {
 		screensNavigator.navigateBack()
 	}
+
+	override fun onQuestionsClicked() {
+		screensNavigator.toQuestionsListClearTop()
+	}
+
+	override fun onBackPressed() {
+		if (questionDetailsViewMvc.isDrawerOpen()) {
+			questionDetailsViewMvc.closeDrawer()
+		} else {
+			super.onBackPressed()
+		}
+	}
 }

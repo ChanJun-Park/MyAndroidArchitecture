@@ -44,11 +44,17 @@ class ToolbarViewMvc(
 	}
 
 	fun enableNavigationUpButtonAndListen(listener: NavigationUpClickListener) {
+		if (hamburgerClickListener != null) {
+			throw RuntimeException("hamburger and up shouldn't be shown together");
+		}
 		navigationUpClickListener = listener
 		upButton.visibility = View.VISIBLE
 	}
 
 	fun enableHamburgerButtonAndListen(listener: HamburgerClickListener) {
+		if (navigationUpClickListener != null) {
+			throw RuntimeException("hamburger and up shouldn't be shown together");
+		}
 		hamburgerClickListener = listener
 		hamburgerButton.visibility = View.VISIBLE
 	}
