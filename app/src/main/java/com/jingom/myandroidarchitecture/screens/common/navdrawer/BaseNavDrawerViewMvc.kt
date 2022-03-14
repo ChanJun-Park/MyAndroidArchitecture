@@ -8,7 +8,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.jingom.myandroidarchitecture.R
-import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
+import com.jingom.myandroidarchitecture.screens.common.views.BaseObservableViewMvc
 
 
 abstract class BaseNavDrawerViewMvc<ListenerType>(

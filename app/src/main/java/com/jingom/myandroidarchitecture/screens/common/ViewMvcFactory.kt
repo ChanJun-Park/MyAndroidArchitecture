@@ -3,6 +3,7 @@ package com.jingom.myandroidarchitecture.screens.common
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import com.jingom.myandroidarchitecture.screens.common.toolbar.ToolbarViewMvc
 import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsViewMvc
 import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsViewMvcImpl
 import com.jingom.myandroidarchitecture.screens.questionslist.QuestionsListViewMvc

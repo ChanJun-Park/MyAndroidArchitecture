@@ -1,4 +1,4 @@
-package com.jingom.myandroidarchitecture.screens.common
+package com.jingom.myandroidarchitecture.screens.common.toolbar
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,8 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import com.jingom.myandroidarchitecture.R
-import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
-import com.jingom.myandroidarchitecture.screens.common.view.BaseViewMvc
+import com.jingom.myandroidarchitecture.screens.common.views.BaseViewMvc
 
 class ToolbarViewMvc(
 	layoutInflater: LayoutInflater,

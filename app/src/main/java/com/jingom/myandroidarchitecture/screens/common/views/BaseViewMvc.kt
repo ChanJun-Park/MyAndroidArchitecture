@@ -1,4 +1,4 @@
-package com.jingom.myandroidarchitecture.screens.common.view
+package com.jingom.myandroidarchitecture.screens.common.views
 
 import android.content.Context
 import android.view.View

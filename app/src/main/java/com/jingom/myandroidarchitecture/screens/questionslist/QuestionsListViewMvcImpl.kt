@@ -8,7 +8,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.ToolbarViewMvc
+import com.jingom.myandroidarchitecture.screens.common.toolbar.ToolbarViewMvc
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
 import com.jingom.myandroidarchitecture.screens.common.navdrawer.BaseNavDrawerViewMvc
 import com.jingom.myandroidarchitecture.screens.common.navdrawer.DrawerItem

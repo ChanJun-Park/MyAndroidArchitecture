@@ -1,7 +1,7 @@
 package com.jingom.myandroidarchitecture.screens.questionslist.questionslistitem
 
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.view.ObservableViewMvc
+import com.jingom.myandroidarchitecture.screens.common.views.ObservableViewMvc
 
 interface QuestionsListItemViewMvc: ObservableViewMvc<QuestionsListItemViewMvc.Listener> {
 

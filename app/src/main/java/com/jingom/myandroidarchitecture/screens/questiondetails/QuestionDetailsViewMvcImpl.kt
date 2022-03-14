@@ -8,12 +8,10 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.QuestionDetails
-import com.jingom.myandroidarchitecture.screens.common.ToolbarViewMvc
+import com.jingom.myandroidarchitecture.screens.common.toolbar.ToolbarViewMvc
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
 import com.jingom.myandroidarchitecture.screens.common.navdrawer.BaseNavDrawerViewMvc
 import com.jingom.myandroidarchitecture.screens.common.navdrawer.DrawerItem
-import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
-import com.jingom.myandroidarchitecture.screens.common.view.BaseViewMvc
 
 class QuestionDetailsViewMvcImpl(
 	layoutInflater: LayoutInflater,

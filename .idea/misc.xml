@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/element_toolbar.xml" value="0.31567028985507245" />
+        <entry key="app/src/main/res/layout/layout_content_frame.xml" value="0.4155622060709705" />
         <entry key="app/src/main/res/layout/layout_drawer.xml" value="0.335" />
         <entry key="app/src/main/res/layout/layout_question_details.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_question_list_item.xml" value="0.50625" />

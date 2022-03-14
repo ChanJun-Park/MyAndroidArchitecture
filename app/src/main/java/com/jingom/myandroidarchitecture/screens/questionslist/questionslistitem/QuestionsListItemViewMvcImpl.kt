@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.view.BaseObservableViewMvc
+import com.jingom.myandroidarchitecture.screens.common.views.BaseObservableViewMvc
 
 class QuestionsListItemViewMvcImpl(
 	layoutInflater: LayoutInflater,

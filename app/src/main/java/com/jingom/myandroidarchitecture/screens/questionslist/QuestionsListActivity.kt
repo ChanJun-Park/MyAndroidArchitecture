@@ -3,10 +3,10 @@ package com.jingom.myandroidarchitecture.screens.questionslist
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.jingom.myandroidarchitecture.screens.common.BaseActivity
-import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
+import com.jingom.myandroidarchitecture.R
+import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressedListener
+import com.jingom.myandroidarchitecture.screens.common.controllers.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class QuestionsListActivity : BaseActivity() {
@@ -20,30 +20,28 @@ class QuestionsListActivity : BaseActivity() {
 		}
 	}
 
-	@Inject lateinit var viewMvcFactory: ViewMvcFactory
-	@Inject lateinit var questionsListController: QuestionsListController
+	private lateinit var backPressedListener: BackPressedListener
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		setContentView(R.layout.layout_content_frame)
 
-		val questionsListViewMvc = viewMvcFactory.getQuestionListViewMvc(null)
-		questionsListController.bindView(questionsListViewMvc)
+		val fragment: QuestionsListFragment
+		if (savedInstanceState == null) {
+			fragment = QuestionsListFragment()
 
-		setContentView(questionsListViewMvc.rootView)
-	}
+			supportFragmentManager.beginTransaction().add(
+				R.id.frame_content, fragment
+			).commit()
+		} else {
+			fragment = supportFragmentManager.findFragmentById(R.id.frame_content) as QuestionsListFragment
+		}
 
-	override fun onStart() {
-		super.onStart()
-		questionsListController.onStart()
-	}
-
-	override fun onStop() {
-		super.onStop()
-		questionsListController.onStop()
+		backPressedListener = fragment
 	}
 
 	override fun onBackPressed() {
-		if (!questionsListController.onBackPressed()) {
+		if (!backPressedListener.onBackPressed()) {
 			super.onBackPressed()
 		}
 	}
