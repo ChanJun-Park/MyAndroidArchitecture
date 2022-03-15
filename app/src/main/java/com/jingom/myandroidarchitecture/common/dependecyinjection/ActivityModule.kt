@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressDispatcher
 import com.jingom.myandroidarchitecture.screens.common.controllers.FragmentFrameWrapper
+import com.jingom.myandroidarchitecture.screens.common.controllers.FragmentHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

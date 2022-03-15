@@ -88,7 +88,7 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Back
 	}
 
 	override fun onNavigateUpButtonClicked() {
-		screensNavigator.toQuestionsList()
+		screensNavigator.navigateUp()
 	}
 
 	override fun onQuestionsClicked() {
