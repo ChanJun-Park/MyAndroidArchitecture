@@ -2,6 +2,8 @@ package com.jingom.myandroidarchitecture.screens.questionslist
 
 import com.jingom.myandroidarchitecture.questions.FetchQuestionListUseCase
 import com.jingom.myandroidarchitecture.questions.Question
+import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressDispatcher
+import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressedListener
 import com.jingom.myandroidarchitecture.screens.common.toastshelper.ToastHelper
 import com.jingom.myandroidarchitecture.screens.common.screensnavigator.ScreensNavigator
 import kotlinx.coroutines.*
@@ -10,8 +12,9 @@ import javax.inject.Inject
 class QuestionsListController @Inject constructor(
 	private val screensNavigator: ScreensNavigator,
 	private val toastHelper: ToastHelper,
-	private val fetchQuestionListUseCase: FetchQuestionListUseCase
-) : QuestionsListViewMvc.Listener {
+	private val fetchQuestionListUseCase: FetchQuestionListUseCase,
+	private val backPressDispatcher: BackPressDispatcher
+) : QuestionsListViewMvc.Listener, BackPressedListener {
 
 	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 	private lateinit var questionsListViewMvc: QuestionsListViewMvc
@@ -22,11 +25,13 @@ class QuestionsListController @Inject constructor(
 
 	fun onStart() {
 		questionsListViewMvc.registerListener(this)
+		backPressDispatcher.registerListener(this)
 		fetchQuestions()
 	}
 
 	fun onStop() {
 		questionsListViewMvc.unregisterListener(this)
+		backPressDispatcher.unregisterListener(this)
 		coroutineScope.coroutineContext.cancelChildren()
 	}
 
@@ -60,7 +65,7 @@ class QuestionsListController @Inject constructor(
 
 	override fun onQuestionClicked(question: Question?) {
 		question?.let {
-			screensNavigator.navigateToQuestionDetails(question.id)
+			screensNavigator.toQuestionDetails(question.id)
 		}
 	}
 
@@ -68,7 +73,7 @@ class QuestionsListController @Inject constructor(
 		// this is the questions list screen - no - op
 	}
 
-	fun onBackPressed(): Boolean {
+	override fun onBackPressed(): Boolean {
 		return if (questionsListViewMvc.isDrawerOpen()) {
 			questionsListViewMvc.closeDrawer()
 			true

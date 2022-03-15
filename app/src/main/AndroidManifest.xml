@@ -17,7 +17,7 @@
                 android:exported="false"
                 android:theme="@style/Theme.MyAndroidArchitecture.NoActionBar" />
         <activity
-                android:name=".screens.questionslist.QuestionsListActivity"
+                android:name=".screens.common.main.MainActivity"
                 android:exported="true"
                 android:theme="@style/Theme.MyAndroidArchitecture.NoActionBar">
             <intent-filter>

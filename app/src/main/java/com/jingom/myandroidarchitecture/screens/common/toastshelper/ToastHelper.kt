@@ -4,10 +4,11 @@ import android.content.Context
 import android.widget.Toast
 import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.common.dependecyinjection.ActivityContextQualifier
+import dagger.hilt.android.qualifiers.ActivityContext
 import javax.inject.Inject
 
 class ToastHelper @Inject constructor(
-	@ActivityContextQualifier private val context: Context
+	@ActivityContext private val context: Context
 ){
 
 	fun showFetchError() {

@@ -11,7 +11,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class QuestionsListFragment: Fragment(), BackPressedListener {
+class QuestionsListFragment: Fragment() {
+
+	companion object {
+		fun newInstance() = QuestionsListFragment()
+	}
+
 	@Inject lateinit var viewMvcFactory: ViewMvcFactory
 	@Inject lateinit var questionsListController: QuestionsListController
 
@@ -30,9 +35,5 @@ class QuestionsListFragment: Fragment(), BackPressedListener {
 	override fun onStop() {
 		super.onStop()
 		questionsListController.onStop()
-	}
-
-	override fun onBackPressed(): Boolean {
-		return questionsListController.onBackPressed()
 	}
 }

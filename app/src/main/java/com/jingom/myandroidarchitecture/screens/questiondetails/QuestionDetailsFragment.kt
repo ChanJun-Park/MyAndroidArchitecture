@@ -88,11 +88,11 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Back
 	}
 
 	override fun onNavigateUpButtonClicked() {
-		screensNavigator.navigateBack()
+		screensNavigator.toQuestionsList()
 	}
 
 	override fun onQuestionsClicked() {
-		screensNavigator.toQuestionsListClearTop()
+		screensNavigator.toQuestionsList()
 	}
 
 	override fun onBackPressed(): Boolean {

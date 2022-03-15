@@ -1,26 +1,26 @@
 package com.jingom.myandroidarchitecture.screens.common.screensnavigator
 
-import android.app.Activity
-import android.content.Context
-import com.jingom.myandroidarchitecture.common.dependecyinjection.ActivityContextQualifier
-import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsActivity
-import com.jingom.myandroidarchitecture.screens.questionslist.QuestionsListActivity
-import com.jingom.myandroidarchitecture.screens.questionslist.QuestionsListViewMvcImpl
+import androidx.fragment.app.FragmentManager
+import com.jingom.myandroidarchitecture.screens.common.controllers.FragmentFrameWrapper
+import com.jingom.myandroidarchitecture.screens.questiondetails.QuestionDetailsFragment
+import com.jingom.myandroidarchitecture.screens.questionslist.QuestionsListFragment
 import javax.inject.Inject
 
 class ScreensNavigator @Inject constructor(
-	@ActivityContextQualifier private val context: Context
+	private val fragmentManager: FragmentManager,
+	private val fragmentFrameWrapper: FragmentFrameWrapper
 ) {
 
-	fun navigateToQuestionDetails(questionId: String) {
-		QuestionDetailsActivity.start(context, questionId)
+	fun toQuestionDetails(questionId: String) {
+		fragmentManager.beginTransaction().addToBackStack(null)
+			.replace(fragmentFrameWrapper.getFragmentFrame().id, QuestionDetailsFragment.newFragment(questionId))
+			.commit()
 	}
 
-	fun navigateBack() {
-		(context as Activity).onBackPressed()
-	}
-
-	fun toQuestionsListClearTop() {
-		QuestionsListActivity.startAndClearTop(context)
+	fun toQuestionsList() {
+		fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+		fragmentManager.beginTransaction().replace(
+			fragmentFrameWrapper.getFragmentFrame().id, QuestionsListFragment.newInstance()
+		).commit()
 	}
 }
