@@ -4,11 +4,9 @@ import com.jingom.myandroidarchitecture.questions.QuestionDetails
 import com.jingom.myandroidarchitecture.screens.common.navdrawer.NavDrawerViewMvc
 import com.jingom.myandroidarchitecture.screens.common.views.ObservableViewMvc
 
-interface QuestionDetailsViewMvc: ObservableViewMvc<QuestionDetailsViewMvc.Listener>, NavDrawerViewMvc {
+interface QuestionDetailsViewMvc: ObservableViewMvc<QuestionDetailsViewMvc.Listener> {
 	interface Listener {
 		fun onNavigateUpButtonClicked()
-
-		fun onQuestionsClicked()
 	}
 
 	fun bindQuestionDetails(questionDetails: QuestionDetails)

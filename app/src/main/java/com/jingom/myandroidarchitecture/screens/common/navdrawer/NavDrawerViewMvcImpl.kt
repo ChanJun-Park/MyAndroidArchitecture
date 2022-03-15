@@ -11,22 +11,22 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.screens.common.views.BaseObservableViewMvc
 
 
-abstract class BaseNavDrawerViewMvc<ListenerType>(
+class NavDrawerViewMvcImpl(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup?,
-	contentView: View
-): BaseObservableViewMvc<ListenerType>(
+): BaseObservableViewMvc<NavDrawerViewMvc.Listener>(
 	layoutInflater.inflate(R.layout.layout_drawer, parent, false)
 ), NavDrawerViewMvc {
+	override val frameLayout: FrameLayout = findViewById(R.id.frame_content)
+
 	private val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-	private val frameLayout: FrameLayout = findViewById<FrameLayout>(R.id.frame_content).apply {
-		addView(contentView)
-	}
 	private val navigationView: NavigationView = findViewById<NavigationView>(R.id.nav_view).apply {
 		setNavigationItemSelectedListener { item ->
 			drawerLayout.closeDrawers()
 			if (item.itemId == R.id.drawer_menu_questions_list) {
-				onDrawerItemClicked(DrawerItem.QUESTIONS_LIST)
+				getListeners().forEach {
+					it.onQuestionListItemClicked()
+				}
 			}
 			false
 		}
@@ -43,6 +43,4 @@ abstract class BaseNavDrawerViewMvc<ListenerType>(
 	override fun closeDrawer() {
 		drawerLayout.closeDrawers()
 	}
-
-	abstract fun onDrawerItemClicked(questionsList: DrawerItem)
 }

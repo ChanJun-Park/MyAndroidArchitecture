@@ -10,15 +10,16 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.Question
 import com.jingom.myandroidarchitecture.screens.common.toolbar.ToolbarViewMvc
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
-import com.jingom.myandroidarchitecture.screens.common.navdrawer.BaseNavDrawerViewMvc
-import com.jingom.myandroidarchitecture.screens.common.navdrawer.DrawerItem
+import com.jingom.myandroidarchitecture.screens.common.navdrawer.NavDrawerHelper
+import com.jingom.myandroidarchitecture.screens.common.views.BaseObservableViewMvc
 
 class QuestionsListViewMvcImpl(
 	layoutInflater: LayoutInflater,
 	parent: ViewGroup?,
-	viewMvcFactory: ViewMvcFactory
-) : BaseNavDrawerViewMvc<QuestionsListViewMvc.Listener>(
-	layoutInflater, parent, layoutInflater.inflate(R.layout.layout_questions_list, parent, false)
+	viewMvcFactory: ViewMvcFactory,
+	private val navDrawerHelper: NavDrawerHelper
+) : BaseObservableViewMvc<QuestionsListViewMvc.Listener>(
+	layoutInflater.inflate(R.layout.layout_questions_list, parent, false)
 ), QuestionsListAdapter.OnQuestionClickListener, QuestionsListViewMvc {
 
 	private val mLstQuestions: RecyclerView = findViewById(R.id.lst_questions)
@@ -28,7 +29,7 @@ class QuestionsListViewMvcImpl(
 		it.setTitle(toolbar.resources.getString(R.string.questions_list_screen_title))
 		it.enableHamburgerButtonAndListen(object : ToolbarViewMvc.HamburgerClickListener {
 			override fun onHamburgerButtonClicked() {
-				openDrawer()
+				navDrawerHelper.openDrawer()
 			}
 		})
 		toolbar.addView(it.rootView)
@@ -56,15 +57,5 @@ class QuestionsListViewMvcImpl(
 
 	override fun hideProgressBar() {
 		progressBar.visibility = View.GONE
-	}
-
-	override fun onDrawerItemClicked(questionsList: DrawerItem) {
-		when (questionsList) {
-			DrawerItem.QUESTIONS_LIST -> {
-				getListeners().forEach {
-					it.onQuestionsClicked()
-				}
-			}
-		}
 	}
 }

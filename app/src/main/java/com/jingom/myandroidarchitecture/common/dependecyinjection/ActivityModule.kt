@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressDispatcher
 import com.jingom.myandroidarchitecture.screens.common.controllers.FragmentFrameWrapper
 import com.jingom.myandroidarchitecture.screens.common.controllers.FragmentHelper
+import com.jingom.myandroidarchitecture.screens.common.navdrawer.NavDrawerHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +32,7 @@ class ActivityModule {
 
 	@Provides
 	fun backPressDispatcher(activity: Activity): BackPressDispatcher = activity as BackPressDispatcher
+
+	@Provides
+	fun navDrawerHelper(activity: Activity): NavDrawerHelper = activity as NavDrawerHelper
 }

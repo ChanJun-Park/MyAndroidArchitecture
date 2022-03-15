@@ -2,10 +2,8 @@ package com.jingom.myandroidarchitecture.screens.questionslist
 
 import com.jingom.myandroidarchitecture.questions.FetchQuestionListUseCase
 import com.jingom.myandroidarchitecture.questions.Question
-import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressDispatcher
-import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressedListener
-import com.jingom.myandroidarchitecture.screens.common.toastshelper.ToastHelper
 import com.jingom.myandroidarchitecture.screens.common.screensnavigator.ScreensNavigator
+import com.jingom.myandroidarchitecture.screens.common.toastshelper.ToastHelper
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -13,8 +11,7 @@ class QuestionsListController @Inject constructor(
 	private val screensNavigator: ScreensNavigator,
 	private val toastHelper: ToastHelper,
 	private val fetchQuestionListUseCase: FetchQuestionListUseCase,
-	private val backPressDispatcher: BackPressDispatcher
-) : QuestionsListViewMvc.Listener, BackPressedListener {
+) : QuestionsListViewMvc.Listener {
 
 	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 	private lateinit var questionsListViewMvc: QuestionsListViewMvc
@@ -25,13 +22,11 @@ class QuestionsListController @Inject constructor(
 
 	fun onStart() {
 		questionsListViewMvc.registerListener(this)
-		backPressDispatcher.registerListener(this)
 		fetchQuestions()
 	}
 
 	fun onStop() {
 		questionsListViewMvc.unregisterListener(this)
-		backPressDispatcher.unregisterListener(this)
 		coroutineScope.coroutineContext.cancelChildren()
 	}
 
@@ -66,19 +61,6 @@ class QuestionsListController @Inject constructor(
 	override fun onQuestionClicked(question: Question?) {
 		question?.let {
 			screensNavigator.toQuestionDetails(question.id)
-		}
-	}
-
-	override fun onQuestionsClicked() {
-		// this is the questions list screen - no - op
-	}
-
-	override fun onBackPressed(): Boolean {
-		return if (questionsListViewMvc.isDrawerOpen()) {
-			questionsListViewMvc.closeDrawer()
-			true
-		} else {
-			false
 		}
 	}
 }

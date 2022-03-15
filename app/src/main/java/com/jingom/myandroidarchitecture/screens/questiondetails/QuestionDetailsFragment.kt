@@ -16,7 +16,7 @@ import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, BackPressedListener {
+class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener {
 
 	companion object {
 		private const val ARG_QUESTION_ID = "ARG_QUESTION_ID"
@@ -89,18 +89,5 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Back
 
 	override fun onNavigateUpButtonClicked() {
 		screensNavigator.navigateUp()
-	}
-
-	override fun onQuestionsClicked() {
-		screensNavigator.toQuestionsList()
-	}
-
-	override fun onBackPressed(): Boolean {
-		return if (questionDetailsViewMvc.isDrawerOpen()) {
-			questionDetailsViewMvc.closeDrawer()
-			true
-		} else {
-			false
-		}
 	}
 }
