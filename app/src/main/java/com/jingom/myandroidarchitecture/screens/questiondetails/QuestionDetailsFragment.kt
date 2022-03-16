@@ -10,6 +10,7 @@ import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.FetchQuestionDetailsUseCase
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
 import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressedListener
+import com.jingom.myandroidarchitecture.screens.common.dialogs.DialogsManager
 import com.jingom.myandroidarchitecture.screens.common.screensnavigator.ScreensNavigator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -34,12 +35,11 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener {
 
 	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-	@Inject
-	lateinit var viewMvcFactory: ViewMvcFactory
-	@Inject
-	lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
-	@Inject
-	lateinit var screensNavigator: ScreensNavigator
+	@Inject lateinit var viewMvcFactory: ViewMvcFactory
+	@Inject lateinit var fetchQuestionDetailsUseCase: FetchQuestionDetailsUseCase
+	@Inject lateinit var screensNavigator: ScreensNavigator
+	@Inject lateinit var dialogsManager: DialogsManager
+
 	private lateinit var questionDetailsViewMvc: QuestionDetailsViewMvc
 	private var questionId: String? = null
 
@@ -84,7 +84,7 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener {
 	}
 
 	private fun onFetchFailed() {
-		Toast.makeText(requireContext(), R.string.error_network_call_failed, Toast.LENGTH_SHORT).show()
+		dialogsManager.showUseCaseErrorDialog(null)
 	}
 
 	override fun onNavigateUpButtonClicked() {
