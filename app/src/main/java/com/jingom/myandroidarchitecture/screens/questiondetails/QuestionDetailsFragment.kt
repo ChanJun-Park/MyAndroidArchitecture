@@ -21,6 +21,7 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 	companion object {
 		private const val ARG_QUESTION_ID = "ARG_QUESTION_ID"
 		private const val DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR"
+		private const val SAVED_STATE_SCREEN_STATE = "SAVED_STATE_SCREEN_STATE"
 
 		fun newFragment(questionId: String): QuestionDetailsFragment {
 			val arguments = Bundle().also {
@@ -31,6 +32,10 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 				this.arguments = arguments
 			}
 		}
+	}
+
+	private enum class ScreenState {
+		IDLE, QUESTION_DETAILS_SHOWN, NETWORK_ERROR
 	}
 
 	private val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
@@ -44,6 +49,16 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 	private lateinit var questionDetailsViewMvc: QuestionDetailsViewMvc
 	private var questionId: String? = null
 
+	private var screenState = ScreenState.IDLE
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+
+		savedInstanceState?.let {
+			screenState = savedInstanceState.getSerializable(SAVED_STATE_SCREEN_STATE) as ScreenState
+		}
+	}
+
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		questionId = requireArguments().getString(ARG_QUESTION_ID)
 		questionDetailsViewMvc = viewMvcFactory.getQuestionDetailsViewMvc(container)
@@ -56,7 +71,7 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 		super.onStart()
 		dialogEventBus.registerListener(this)
 
-		if (DIALOG_ID_NETWORK_ERROR != dialogsManager.getShownDialogTag()) {
+		if (screenState != ScreenState.NETWORK_ERROR) {
 			fetchQuestionDetails()
 		}
 	}
@@ -65,6 +80,11 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 		super.onStop()
 		coroutineScope.coroutineContext.cancelChildren()
 		dialogEventBus.unregisterListener(this)
+	}
+
+	override fun onSaveInstanceState(outState: Bundle) {
+		super.onSaveInstanceState(outState)
+		outState.putSerializable(SAVED_STATE_SCREEN_STATE, screenState)
 	}
 
 	private fun fetchQuestionDetails() {
@@ -76,9 +96,11 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 				try {
 					when (val result = fetchQuestionDetailsUseCase.fetchQuestionDetails(it)) {
 						is FetchQuestionDetailsUseCase.Result.Success -> {
+							screenState = ScreenState.QUESTION_DETAILS_SHOWN
 							questionDetailsViewMvc.bindQuestionDetails(result.question)
 						}
 						is FetchQuestionDetailsUseCase.Result.Failure -> {
+							screenState = ScreenState.NETWORK_ERROR
 							onFetchFailed()
 						}
 					}
@@ -101,10 +123,11 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 		(event as? PromptDialogEvent)?.let {
 			when (it.clickedButton) {
 				PromptDialogEvent.Button.POSITIVE -> {
+					screenState = ScreenState.IDLE
 					fetchQuestionDetails()
 				}
 				PromptDialogEvent.Button.NEGATIVE -> {
-					// do nothing
+					screenState = ScreenState.IDLE
 				}
 			}
 		}
