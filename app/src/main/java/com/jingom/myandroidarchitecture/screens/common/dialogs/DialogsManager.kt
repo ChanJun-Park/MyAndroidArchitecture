@@ -23,6 +23,16 @@ class DialogsManager @Inject constructor(
 		infoDialog.show(fragmentManager, tag)
 	}
 
+	fun getShownDialogTag(): String? {
+		fragmentManager.fragments.forEach { fragment ->
+			if (fragment is BaseDialog) {
+				return fragment.tag
+			}
+		}
+
+		return null
+	}
+
 	private fun getString(@StringRes id: Int): String {
 		return context.getString(id)
 	}

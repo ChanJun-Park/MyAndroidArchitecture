@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.jingom.myandroidarchitecture.R
 import com.jingom.myandroidarchitecture.questions.FetchQuestionDetailsUseCase
 import com.jingom.myandroidarchitecture.screens.common.ViewMvcFactory
-import com.jingom.myandroidarchitecture.screens.common.controllers.BackPressedListener
 import com.jingom.myandroidarchitecture.screens.common.dialogs.DialogsEventBus
 import com.jingom.myandroidarchitecture.screens.common.dialogs.DialogsManager
 import com.jingom.myandroidarchitecture.screens.common.dialogs.promptdialogs.PromptDialogEvent
@@ -23,6 +20,7 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 
 	companion object {
 		private const val ARG_QUESTION_ID = "ARG_QUESTION_ID"
+		private const val DIALOG_ID_NETWORK_ERROR = "DIALOG_ID_NETWORK_ERROR"
 
 		fun newFragment(questionId: String): QuestionDetailsFragment {
 			val arguments = Bundle().also {
@@ -56,8 +54,11 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 
 	override fun onStart() {
 		super.onStart()
-		fetchQuestionDetails()
 		dialogEventBus.registerListener(this)
+
+		if (DIALOG_ID_NETWORK_ERROR != dialogsManager.getShownDialogTag()) {
+			fetchQuestionDetails()
+		}
 	}
 
 	override fun onStop() {
@@ -89,7 +90,7 @@ class QuestionDetailsFragment: Fragment(), QuestionDetailsViewMvc.Listener, Dial
 	}
 
 	private fun onFetchFailed() {
-		dialogsManager.showUseCaseErrorDialog(null)
+		dialogsManager.showUseCaseErrorDialog(DIALOG_ID_NETWORK_ERROR)
 	}
 
 	override fun onNavigateUpButtonClicked() {
